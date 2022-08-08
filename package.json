@@ -1,0 +1,28 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Admin de catalogo de vídeos",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "tsc": "tsc",
+    "clean:tsc": "rm tsconfig.tsbuildinfo",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/core": "^1.2.203",
+    "@swc/jest": "^0.2.21",
+    "@types/jest": "^28.1.1",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "14.14.31",
+    "jest": "^28.1.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
