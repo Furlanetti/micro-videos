@@ -1,4 +1,5 @@
 import Category from "./category";
+import UniqueEntityId from "../../../@seedwork/domain/unique-entity-id.vo"
 
 describe("Category test", () => {
   it("constructor", () => {
@@ -51,6 +52,24 @@ describe("Category test", () => {
       name: "Movie",
       created_at,
     });
+  });
+
+  test("id field", () => {
+    let category = new Category({ name: "Movie" });
+
+    expect(category.id).not.toBeNull();
+
+    category = new Category({ name: "Movie" }, null);
+
+    expect(category.id).not.toBeNull();
+
+    category = new Category({ name: "Movie" }, undefined);
+
+    expect(category.id).not.toBeNull();
+
+    category = new Category({ name: "Movie" }, new UniqueEntityId());
+
+    expect(category.id).not.toBeNull();
   });
 
   test("getter of name field", () => {
