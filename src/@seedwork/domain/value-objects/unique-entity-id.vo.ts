@@ -1,9 +1,10 @@
-import InvalidUuidError from "../errors/invalid-uuid.error";
+import InvalidUuidError from "../../errors/invalid-uuid.error";
 import { v4 as uuid, validate as uuidValidate } from "uuid";
+import ValueObject from "./value-object";
 
-export default class UniqueEntityId {
+export default class UniqueEntityId extends ValueObject<string> {
   constructor(public readonly id?: string) {
-    this.id = id || uuid();
+    super(id || uuid());
     this.validate();
   }
 
