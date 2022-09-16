@@ -1,5 +1,5 @@
+import InvalidUuidError from "@seedwork/errors/invalid-uuid.error";
 import { validate } from "uuid";
-import InvalidUuidError from "../../errors/invalid-uuid.error";
 import UniqueEntityId from "./unique-entity-id.vo";
 
 describe("UniqueEntityId Unit test", () => {

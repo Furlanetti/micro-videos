@@ -1,5 +1,5 @@
+import UniqueEntityId from "@seedwork/domain/value-objects/unique-entity-id.vo";
 import Category from "./category";
-import UniqueEntityId from "../../../@seedwork/domain/unique-entity-id.vo"
 
 describe("Category test", () => {
   it("constructor", () => {
@@ -119,5 +119,46 @@ describe("Category test", () => {
     const created_at = new Date();
     category = new Category({ name: "Movie", created_at });
     expect(category.created_at).toBe(created_at);
+  });
+
+  test("update name and description", () => {
+    let category = new Category({ name: "Movie" });
+
+    category.update("New name", "New description");
+    expect(category.name).toBe("New name");
+    expect(category.description).toBe("New description");
+
+    category = new Category({
+      name: "Old name",
+      description: "Old description",
+    });
+
+    category.update("New name", "New description");
+    expect(category.name).toBe("New name");
+    expect(category.description).toBe("New description");
+  });
+
+  test("activate should change is_active to true", () => {
+    let category = new Category({ name: "Movie", is_active: false });
+
+    category.activate();
+    expect(category.is_active).toBeTruthy();
+
+    category = new Category({ name: "Movie", is_active: true });
+
+    category.activate();
+    expect(category.is_active).toBeTruthy();
+  });
+
+  test("deactivate should change is_active to false", () => {
+    let category = new Category({ name: "Movie", is_active: false });
+
+    category.deactivate();
+    expect(category.is_active).toBeFalsy();
+
+    category = new Category({ name: "Movie", is_active: true });
+
+    category.deactivate();
+    expect(category.is_active).toBeFalsy;
   });
 });
