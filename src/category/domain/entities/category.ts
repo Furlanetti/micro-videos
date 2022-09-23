@@ -1,5 +1,5 @@
 import UniqueEntityId from "@seedwork/domain/value-objects/unique-entity-id.vo";
-import Entity from "@seedwork/entity/entity";
+import Entity from "@seedwork/domain/entity/entity";
 
 export interface Properties {
   name: string;
