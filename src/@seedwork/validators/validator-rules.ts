@@ -21,7 +21,7 @@ export default class ValidatorRules {
   }
 
   maxLength(max: number): this {
-    if (this.value.lenght > max) {
+    if (this.value.length > max) {
       throw new ValidationError(
         `The ${this.property} must be less or equal than ${max}`
       );
