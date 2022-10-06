@@ -10,6 +10,12 @@ export interface Properties {
 
 export default class Category extends Entity<Properties> {
   constructor(public readonly props: Properties, id?: UniqueEntityId) {
+    if (!props.name) {
+      throw new Error("Name is required");
+    }
+    if (props.name.length > 255) {
+      throw new Error("Name must be less than 255 chars");
+    }
     super(props, id);
     this.description = this.props.description;
     this.is_active = this.props.is_active;
