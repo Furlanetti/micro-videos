@@ -116,6 +116,14 @@ describe("ValidatorRules", () => {
 
     const validArrange: Values[] = [
       {
+        value: undefined,
+        property: "field",
+      },
+      {
+        value: null,
+        property: "field",
+      },
+      {
         value: "test",
         property: "field",
       },
@@ -127,6 +135,43 @@ describe("ValidatorRules", () => {
         property: item.property,
         rule: "string",
         error: new ValidationError("The field must be a string"),
+      });
+    });
+  });
+
+  it("boolean validation rules", () => {
+    const arrange: Values[] = [
+      { value: 5, property: "field" },
+      { value: "true", property: "field" },
+      { value: "false", property: "field" },
+    ];
+
+    arrange.forEach((item) => {
+      assertIsInvalid({
+        value: item.value,
+        property: item.property,
+        rule: "boolean",
+        error: new ValidationError("The field must be a boolean"),
+      });
+    });
+
+    const validArrange: Values[] = [
+      {
+        value: true,
+        property: "field",
+      },
+      {
+        value: false,
+        property: "field",
+      },
+    ];
+
+    validArrange.forEach((item) => {
+      assertIsValid({
+        value: item.value,
+        property: item.property,
+        rule: "boolean",
+        error: new ValidationError("The field must be a boolean"),
       });
     });
   });
@@ -160,5 +205,32 @@ describe("ValidatorRules", () => {
         params: [5],
       });
     });
+  });
+
+  it("should throw a validation error when combine two or more validation rules", () => {
+    let validator = ValidatorRules.values(null, "field");
+    expect(() => validator.required().string()).toThrow(
+      new ValidationError("The field is required")
+    );
+
+    validator = ValidatorRules.values(5, "field");
+    expect(() => validator.required().string().maxLength(5)).toThrow(
+      new ValidationError("The field must be a string")
+    );
+
+    validator = ValidatorRules.values("123456", "field");
+    expect(() => validator.required().string().maxLength(5)).toThrow(
+      new ValidationError("The field must be less or equal than 5")
+    );
+
+    validator = ValidatorRules.values(null, "field");
+    expect(() => validator.required().boolean()).toThrow(
+      new ValidationError("The field is required")
+    );
+
+    validator = ValidatorRules.values(6, "field");
+    expect(() => validator.required().boolean()).toThrow(
+      new ValidationError("The field must be a boolean")
+    );
   });
 });
