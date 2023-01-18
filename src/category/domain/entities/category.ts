@@ -1,5 +1,6 @@
 import UniqueEntityId from "@seedwork/domain/value-objects/unique-entity-id.vo";
 import Entity from "@seedwork/domain/entity/entity";
+import ValidatorRules from "@seedwork/validators/validator-rules";
 
 export interface Properties {
   name: string;
@@ -10,12 +11,7 @@ export interface Properties {
 
 export default class Category extends Entity<Properties> {
   constructor(public readonly props: Properties, id?: UniqueEntityId) {
-    if (!props.name) {
-      throw new Error("Name is required");
-    }
-    if (props.name.length > 255) {
-      throw new Error("Name must be less than 255 chars");
-    }
+    Category.validate(props);
     super(props, id);
     this.description = this.props.description;
     this.is_active = this.props.is_active;
@@ -47,6 +43,7 @@ export default class Category extends Entity<Properties> {
   }
 
   update(name: string, description: string) {
+    Category.validate({ name, description });
     this.props.name = name;
     this.props.description = description;
   }
@@ -57,5 +54,14 @@ export default class Category extends Entity<Properties> {
 
   deactivate() {
     this.props.is_active = false;
+  }
+
+  static validate(props: Omit<Properties, "created_at">) {
+    ValidatorRules.values(props.name, "name")
+      .required()
+      .string()
+      .maxLength(255);
+    ValidatorRules.values(props.description, "description").string();
+    ValidatorRules.values(props.is_active, "is_active").boolean();
   }
 }
