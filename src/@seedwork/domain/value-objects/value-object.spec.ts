@@ -13,7 +13,7 @@ describe("ValueObject Unit test", () => {
 
   it("should convert to string", () => {
     const date = new Date();
-    let arrange = [
+    const arrange = [
       { received: "", expected: "" },
       { received: "fake test", expected: "fake test" },
       { received: 0, expected: "0" },

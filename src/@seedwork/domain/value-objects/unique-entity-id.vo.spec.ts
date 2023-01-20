@@ -1,4 +1,4 @@
-import InvalidUuidError from "@seedwork/errors/invalid-uuid.error";
+import InvalidUuidError from "../errors/invalid-uuid.error";
 import { validate } from "uuid";
 import UniqueEntityId from "./unique-entity-id.vo";
 
