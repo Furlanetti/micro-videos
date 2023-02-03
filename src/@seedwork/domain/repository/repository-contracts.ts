@@ -24,7 +24,7 @@ export class SearchParams {
   protected _per_page = 15;
   protected _sort: string | null;
   protected _sort_dir: SortDirection | null;
-  protected _filter: Filter | null;
+  protected _filter: string | null;
 
   constructor(props: SearchProps = {}) {
     this.page = props.page;
@@ -37,19 +37,44 @@ export class SearchParams {
     return this._per_page;
   }
 
-  set per_page(value: number) {}
+  private set per_page(value: number) {
+    let _per_page = +value;
+
+    if (
+      Number.isNaN(_per_page) ||
+      _per_page <= 0 ||
+      parseInt(_per_page as any) !== _per_page
+    ) {
+      _per_page = this._per_page;
+    }
+
+    this._per_page = _per_page;
+  }
   get sort() {
     return this._sort;
   }
+  private set sort(value: string | null) {
+    this._sort =
+      value === null || value === undefined || value === "" ? null : `%{value}`;
+  }
 
-  set sort(value: string | null) {}
+  private set sort_dir(value: SortDirection | null) {
+    if (!this.sort) {
+      this.sort_dir = null;
+      return;
+    }
 
-  set sort_dir(value: SortDirection | null) {}
+    const dir = `${value}`.toLowerCase();
+    this.sort_dir = dir !== "asc" && dir !== "desc" ? "asc" : dir;
+  }
   get sort_dir() {
     return this._sort_dir;
   }
 
-  set filter(value: Filter | null) {}
+  set filter(value: string | null) {
+    this._filter =
+      value === null || value === undefined || value === "" ? null : `%{value}`;
+  }
   get filter() {
     return this._filter;
   }
@@ -57,14 +82,21 @@ export class SearchParams {
   get page() {
     return this._page;
   }
+  private set page(value: number) {
+    let _page = +value;
 
-  set page(value: number) {}
+    if (Number.isNaN(_page) || _page <= 0 || parseInt(_page as any) !== _page) {
+      _page = 1;
+    }
+
+    this._page = _page;
+  }
 }
 
 export interface SearchableRepositoryInterface<
   E extends Entity,
-  SearchInput,
-  SearchOutput
+  SearchOutput,
+  SearchInput = SearchParams
 > extends RepositoryInterface<E> {
   search(props: SearchInput): Promise<SearchOutput>;
 }
