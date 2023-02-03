@@ -40,7 +40,89 @@ describe("SearchParams Unit Test", () => {
     ];
 
     arrange.forEach((item) => {
-      expect(new SearchParams({ per_page: item.per_page as any }).per_page).toBe(
+      expect(
+        new SearchParams({ per_page: item.per_page as any }).per_page
+      ).toBe(item.expected);
+    });
+  });
+
+  it("sort prop", () => {
+    const arrange = [
+      { sort: null, expected: null },
+      { sort: undefined, expected: null },
+      { sort: "", expected: null },
+      { sort: "field", expected: "field" },
+      { sort: 0, expected: "0" },
+      { sort: -1, expected: "-1" },
+      { sort: true, expected: "true" },
+      { sort: false, expected: "false" },
+      { sort: {}, expected: "[object Object]" },
+      { sort: 1, expected: "1" },
+      { sort: 2, expected: "2" },
+      { sort: 10, expected: "10" },
+    ];
+
+    arrange.forEach((item) => {
+      expect(new SearchParams({ sort: item.sort as any }).sort).toBe(
+        item.expected
+      );
+    });
+  });
+
+  it("sort_dir prop", () => {
+    let params = new SearchParams();
+    expect(params.sort_dir).toBeNull();
+
+    params = new SearchParams({ sort: null });
+    expect(params.sort_dir).toBeNull();
+
+    params = new SearchParams({ sort: undefined });
+    expect(params.sort_dir).toBeNull();
+
+    params = new SearchParams({ sort: "" });
+    expect(params.sort_dir).toBeNull();
+
+    const arrange = [
+      { sort_dir: null, expected: "asc" },
+      { sort_dir: undefined, expected: "asc" },
+      { sort_dir: "", expected: "asc" },
+      { sort_dir: "fake", expected: "asc" },
+      { sort_dir: 0, expected: "asc" },
+      { sort_dir: "asc", expected: "asc" },
+      { sort_dir: "ASC", expected: "asc" },
+      { sort_dir: "desc", expected: "desc" },
+      { sort_dir: "DESC", expected: "desc" },
+    ];
+
+    arrange.forEach((item) => {
+      expect(
+        new SearchParams({ sort: "field", sort_dir: item.sort_dir as any })
+          .sort_dir
+      ).toBe(item.expected);
+    });
+  });
+
+  it("filter prop", () => {
+    const params = new SearchParams();
+    expect(params.filter).toBeNull();
+
+    const arrange = [
+      { filter: null, expected: null },
+      { filter: undefined, expected: null },
+      { filter: "", expected: null },
+      { filter: "fake", expected: "fake" },
+      { filter: 0, expected: "0" },
+      { filter: -1, expected: "-1" },
+      { filter: true, expected: "true" },
+      { filter: false, expected: "false" },
+      { filter: {}, expected: "[object Object]" },
+      { filter: 1, expected: "1" },
+      { filter: 2, expected: "2" },
+      { filter: 10, expected: "10" },
+    ];
+
+    arrange.forEach((item) => {
+      expect(new SearchParams({ filter: item.filter as any }).filter).toBe(
         item.expected
       );
     });
