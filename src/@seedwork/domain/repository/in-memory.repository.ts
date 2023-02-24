@@ -117,6 +117,6 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     const start = (page - 1) * per_page;
     const limit = start + per_page;
 
-    return items.slice(start,limit);
+    return items.slice(start, limit);
   }
 }
