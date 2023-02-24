@@ -34,9 +34,35 @@ describe("InMemorySearchableRepository Unit test", () => {
     repository = new StubInMemorySearchableRepository();
   });
 
-  describe("applyFilter", () => {});
+  describe("applyFilter", () => {
+    it("should no filte ritems when filter param is null", async () => {
+      const items = [new StubEntity({ name: "name value", price: 5 })];
 
-  describe("applySort", () => {});
+      const filteredItems = await repository["applyFilter"](items, null);
+      expect(filteredItems).toStrictEqual(items);
+    });
+
+    it("should filter using a filter param", async () => {
+      const items = [
+        new StubEntity({ name: "test", price: 5 }),
+        new StubEntity({ name: "TEST", price: 5 }),
+        new StubEntity({ name: "fake", price: 0 }),
+      ];
+
+      let filteredItems = await repository["applyFilter"](items, "TEST");
+      expect(filteredItems).toStrictEqual([items[0], items[1]]);
+
+      filteredItems = await repository["applyFilter"](items, "5");
+      expect(filteredItems).toStrictEqual([items[0], items[1]]);
+
+      filteredItems = await repository["applyFilter"](items, "no-filter");
+      expect(filteredItems).toHaveLength(0);
+    });
+  });
+
+  describe("applySort", () => {
+
+  });
 
   describe("applyPaginate", () => {});
 
